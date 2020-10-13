@@ -10,7 +10,7 @@ module Doddle
     private
     def init_values
       @order = Order.new
-      @order.doddle_id = body["resource"]["orderId"]
+      @order.doddle_id = body_json["resource"]["orderId"]
 
     end
   end
