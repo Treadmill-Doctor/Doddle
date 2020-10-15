@@ -10,7 +10,8 @@ module Doddle
 
     def initialize(opts = {})
       @company_id = opts[:company_id]
-      @domain = "https://apigw.apac-preprod.doddle.tech"
+
+      @domain = opts[:env] == "development" ? "https://apigw.apac-preprod.doddle.tech" : "https://apigw.apac-prod.doddle.tech"
 
       @default_header = {
         'Content-Type' => 'application/json',
@@ -45,7 +46,7 @@ module Doddle
       request.body = params.to_json
       # Send the request
       response = http.request(request)
-      
+
       return Doddle::TokenResponse.new( body: response.body, code: response.code )
 
     end
