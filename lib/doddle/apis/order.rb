@@ -8,19 +8,34 @@ module Doddle
         @client = client
       end
 
+      def get_by_id(id)
+        #GET {{LEGACY_DODDLE_API_URL}}/v2/orders/orderId/:orderId
+        #url = URI.parse(@client.domain + "/v2/orders/{{#{id}}}")
+        url = URI.parse(@client.domain + "/v2/orders/orderId/#{id}")
+        
+        http = Net::HTTP.new(url.host, url.port);
+        http.use_ssl = true
+        request = Net::HTTP::Get.new(url.request_uri, @client.token_header)
+
+
+        response = http.request(request)
+        puts response.read_body
+
+      end
+
       def create(order)
 
         #this is only used if something just goes wrong, will fully implement later
-        uri = URI.parse(@client.domain + "/v2/orders/")
+        url = URI.parse(@client.domain + "/v2/orders/")
 
         # Create the HTTP objects
-        http = Net::HTTP.new(uri.host, uri.port)
+        http = Net::HTTP.new(url.host, url.port)
 
         #http.set_debug_output($stdout)
 
         http.use_ssl = true
 
-        request = Net::HTTP::Post.new(uri.request_uri, @client.token_header)
+        request = Net::HTTP::Post.new(url.request_uri, @client.token_header)
 
         request.body = build_json(order)
         # Send the request
@@ -29,7 +44,6 @@ module Doddle
         return Doddle::OrderResponse.new(body: response.body, code: response.code)
 
       end
-
 
       private
       def build_json(order)

@@ -2,17 +2,14 @@ require "test_helper"
 
 class DoddleTest < Minitest::Test
   include Doddle::Test::Credentials
-  #def setup
-  #  @meme = Meme.new
-  #end
+
+  def setup
+    @client = Doddle::Client.new( creds.merge(company_id: "TREADMILL_DOCTOR", env: "development") )
+    response = @client.get_token
+    @client.set_token(response.token)
+  end
 
   def test_doddle_create_order
-
-    client = Doddle::Client.new( creds.merge(company_id: "TREADMILL_DOCTOR") )
-    response = client.get_token
-
-    client.set_token(response.token)
-
 
     #ORDER DATA
     order = Doddle::Order.new
@@ -40,10 +37,16 @@ class DoddleTest < Minitest::Test
 
     #CALL ORDER API ENDPOINT
 
-    order_api = Doddle::Apis::Order.new(client)
+    order_api = Doddle::Apis::Order.new(@client)
     o = order_api.create(order)
 
     assert_equal Doddle::OrderResponse, o.class
+  end
+
+
+  def test_gets_order_by_id
+    order_api = Doddle::Apis::Order.new(@client)
+    order_api.get_by_id("a4e7123b-f914-4111-b7b9-895068c9ce04")
   end
 
 end

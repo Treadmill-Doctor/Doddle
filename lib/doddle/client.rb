@@ -5,13 +5,14 @@ module Doddle
     attr_reader :token_header
     attr_reader :token
     attr_reader :company_id
-    attr_reader :domain
+    attr_reader :domain, :legacy_domain
     attr_reader :company_id
 
     def initialize(opts = {})
       @company_id = opts[:company_id]
 
       @domain = opts[:env] == "development" ? "https://apigw.apac-preprod.doddle.tech" : "https://apigw.apac-prod.doddle.tech"
+      @legacy_domain = opts[:env] == "development" ? "https://stage-apigw.doddle.it" : "https://apigw.apac-prod.doddle.tech"
 
       @default_header = {
         'Content-Type' => 'application/json',
@@ -38,7 +39,7 @@ module Doddle
 
       params = {
         grant_type: "client_credentials",
-        scope: "orders:write"
+        scope: "orders:write orders:read"
       }
 
       request = Net::HTTP::Post.new(uri.request_uri, default_header)
