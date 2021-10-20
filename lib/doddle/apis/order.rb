@@ -113,7 +113,7 @@ module Doddle
               #"price": i[:price],
               productId: i[:product_id],
               quantity: i[:quantity],
-              sku: i[:sku]
+              sku: i[:sku].nil? ? "0000" : i[:sku]
             }
 
           }
