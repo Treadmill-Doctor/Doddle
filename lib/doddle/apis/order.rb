@@ -118,7 +118,7 @@ module Doddle
             }
 
           }
-
+          pp data if ENV["RAILS_ENV"] == "development"
           return data.to_json
         end
       end
