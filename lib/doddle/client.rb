@@ -9,7 +9,7 @@ module Doddle
     attr_reader :company_id
 
     def initialize(opts = {})
-      @company_id = opts[:company_id]
+      @company_id = opts[:company_id] || "TREADMILL DOCTOR"
 
       @domain = opts[:env] == "development" ? "https://apigw.apac-preprod.doddle.tech" : "https://apigw.apac-prod.doddle.tech"
       @legacy_domain = opts[:env] == "development" ? "https://stage-apigw.doddle.it" : "https://apigw.apac-prod.doddle.tech"
